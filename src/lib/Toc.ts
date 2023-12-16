@@ -1,7 +1,8 @@
 import { Position, Range, TextDocument, TextEditorEdit, window } from "vscode";
 import TocConfig from "./TocConfig";
-import TocHeaderManager, { Header } from "./TocHeaderManager";
+import TocHeaderManager from "./TocHeaderManager";
 import RegexStrings from "./RegexStrings";
+import TocHeader from "./TocHeader";
 
 export default class Toc {
   config = new TocConfig();
@@ -66,12 +67,30 @@ export default class Toc {
 
   private createToc(
     editBuilder: TextEditorEdit,
-    headers: Header[],
+    headers: TocHeader[],
     insertPos: Position
   ) {
+    let minHeaderDepth = 6;
+    headers.forEach((header) => {
+      minHeaderDepth = Math.min(minHeaderDepth, header.depth);
+    });
+
+    const headerText: string[] = [];
+    headers.forEach((header) => {
+      headerText.push(
+        "\t".repeat(header.depth - minHeaderDepth) +
+          "- " +
+          header.generateHeaderText()
+      );
+    });
+
     editBuilder.insert(
       insertPos,
-      "<!-- MarkdownHelperToc -->\n<!-- /MarkdownHelperToc -->"
+      `<!-- MarkdownHelperToc minDepth=${this.config.minDepth} maxDepth=${
+        this.config.maxDepth
+      } -->\n<!-- prettier-ignore -->\n${headerText.join(
+        "\n"
+      )}\n<!-- /MarkdownHelperToc -->`
     );
   }
 
@@ -84,9 +103,25 @@ export default class Toc {
     const tocHeaderManager = new TocHeaderManager(this.config);
     const headers = await tocHeaderManager.getHeaders();
     const tocRange = this.getTocRange();
+    editor
+      .edit((editBuilder) => {
+        this.deleteToc(editBuilder, tocRange);
+        this.createToc(editBuilder, headers, tocRange.start);
+      })
+      .then(async () => {
+        await editor.document.save();
+      });
+  }
+
+  public async removeTocFromDoc() {
+    const tocRange = this.getTocRange();
+    const editor = window.activeTextEditor;
+    if (!editor) {
+      return;
+    }
+
     editor.edit((editBuilder) => {
       this.deleteToc(editBuilder, tocRange);
-      this.createToc(editBuilder, headers, tocRange.start);
     });
   }
 }

@@ -5,4 +5,9 @@ export default class MarkdownHelper {
     const toc = new Toc();
     await toc.insertOrUpdate();
   }
+
+  public async removeToc() {
+    const toc = new Toc();
+    await toc.removeTocFromDoc();
+  }
 }

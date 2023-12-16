@@ -8,16 +8,12 @@ import {
 } from "vscode";
 import TocConfig from "./TocConfig";
 import RegexStrings from "./RegexStrings";
-
-export type Header = {
-  title: string;
-  depth: number;
-  range: Range;
-};
+import TocHeader from "./TocHeader";
 
 export default class TocHeaderManager {
   tocConfig: TocConfig;
-  private headers: Header[] = [];
+  private headers: TocHeader[] = [];
+  private headerCounter = new Map<string, number>();
 
   constructor(tocConfig: TocConfig) {
     this.tocConfig = tocConfig;
@@ -35,15 +31,20 @@ export default class TocHeaderManager {
 
       const depth = match[1].length;
       const title = match[2];
+      this.headerCounter.set(title, (this.headerCounter.get(title) ?? 0) + 1);
+
       if (
         depth >= this.tocConfig.minDepth &&
         depth <= this.tocConfig.maxDepth
       ) {
-        this.headers.push({
-          title,
-          depth,
-          range: symbol.range,
-        });
+        this.headers.push(
+          new TocHeader(
+            title,
+            depth,
+            symbol.range,
+            this.headerCounter.get(title)
+          )
+        );
       }
 
       if (depth < this.tocConfig.maxDepth) {
@@ -52,7 +53,7 @@ export default class TocHeaderManager {
     }
   };
 
-  public async getHeaders(): Promise<Header[]> {
+  public async getHeaders(): Promise<TocHeader[]> {
     const editor = window.activeTextEditor;
     if (!editor) {
       return [];

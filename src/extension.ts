@@ -4,15 +4,22 @@ import MarkdownHelper from "./MarkdownHelper";
 export function activate(context: ExtensionContext) {
   const markdownHelper = new MarkdownHelper();
 
-  console.log("Active");
-  let disposable = commands.registerCommand(
-    "markdown-helper.helloWorld",
+  let insertToc = commands.registerCommand(
+    "markdown-helper.insertToc",
     async () => {
       await markdownHelper.insertOrUpdateToc();
     }
   );
 
-  context.subscriptions.push(disposable);
+  let removeToc = commands.registerCommand(
+    "markdown-helper.removeToc",
+    async () => {
+      await markdownHelper.removeToc();
+    }
+  );
+
+  context.subscriptions.push(insertToc);
+  context.subscriptions.push(removeToc);
 }
 
 // This method is called when your extension is deactivated
