@@ -1,30 +1,45 @@
 {
-  "name": "az-markdown-mate",
+  "name": "markdown-mate",
   "displayName": "Markdown Mate",
   "description": "Some commands to help with Markdown files",
   "version": "0.0.1",
   "icon": "images/logo.png",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/azhar1038/markdown-helper"
+  "preview": true,
+  "author": {
+    "name": "Md Azharuddin",
+    "email": "mdazhar.1038@gmail.com",
+    "url": "https://azhar1038.github.io/"
   },
   "publisher": "Azhar",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/azhar1038/markdown-mate"
+  },
+  "homepage": "https://github.com/azhar1038/markdown-mate",
   "engines": {
     "vscode": "^1.85.0"
   },
   "categories": [
     "Other"
   ],
+  "keywords": [
+    "markdown",
+    "table of contents",
+    "toc",
+    "tool",
+    "helper",
+    "shortcut"
+  ],
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "az-markdown-mate.insertToc",
+        "command": "markdown-mate.insertToc",
         "title": "Markdown: Insert Table of Contents"
       },
       {
-        "command": "az-markdown-mate.removeToc",
+        "command": "markdown-mate.removeToc",
         "title": "Markdown: Remove Table of Contents"
       }
     ]
