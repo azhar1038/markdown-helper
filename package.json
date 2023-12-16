@@ -3,6 +3,11 @@
   "displayName": "Markdown Helper",
   "description": "Some commands to help with Markdown files",
   "version": "0.0.1",
+  "icon": "images/logo.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/azhar1038/markdown-helper"
+  },
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -43,4 +48,3 @@
     "@vscode/test-electron": "^2.3.8"
   }
 }
-
