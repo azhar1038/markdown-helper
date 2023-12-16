@@ -5,14 +5,14 @@ export function activate(context: ExtensionContext) {
   const markdownHelper = new MarkdownHelper();
 
   let insertToc = commands.registerCommand(
-    "az-markdown-helper.insertToc",
+    "az-markdown-mate.insertToc",
     async () => {
       await markdownHelper.insertOrUpdateToc();
     }
   );
 
   let removeToc = commands.registerCommand(
-    "az-markdown-helper.removeToc",
+    "az-markdown-mate.removeToc",
     async () => {
       await markdownHelper.removeToc();
     }

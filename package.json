@@ -1,5 +1,5 @@
 {
-  "name": "az-markdown-helper",
+  "name": "az-markdown-mate",
   "displayName": "Markdown Mate",
   "description": "Some commands to help with Markdown files",
   "version": "0.0.1",
@@ -20,11 +20,11 @@
   "contributes": {
     "commands": [
       {
-        "command": "az-markdown-helper.insertToc",
+        "command": "az-markdown-mate.insertToc",
         "title": "Markdown: Insert Table of Contents"
       },
       {
-        "command": "az-markdown-helper.removeToc",
+        "command": "az-markdown-mate.removeToc",
         "title": "Markdown: Remove Table of Contents"
       }
     ]
