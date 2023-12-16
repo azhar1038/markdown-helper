@@ -1,4 +1,4 @@
-# MarkdownHelper (WIP: Work in Progress)
+# Markdown Mate (WIP: Work in Progress)
 
 This is an extension to help you deal with readme files.
 It can do following things
