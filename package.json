@@ -1,6 +1,6 @@
 {
-  "name": "markdown-helper",
-  "displayName": "Markdown Helper",
+  "name": "az-markdown-helper",
+  "displayName": "Markdown Mate",
   "description": "Some commands to help with Markdown files",
   "version": "0.0.1",
   "icon": "images/logo.png",
@@ -8,6 +8,7 @@
     "type": "git",
     "url": "https://github.com/azhar1038/markdown-helper"
   },
+  "publisher": "Azhar",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -19,11 +20,11 @@
   "contributes": {
     "commands": [
       {
-        "command": "markdown-helper.insertToc",
+        "command": "az-markdown-helper.insertToc",
         "title": "Markdown: Insert Table of Contents"
       },
       {
-        "command": "markdown-helper.removeToc",
+        "command": "az-markdown-helper.removeToc",
         "title": "Markdown: Remove Table of Contents"
       }
     ]
