@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/azhar1038/markdown-mate",
   "engines": {
-    "vscode": "^1.85.0"
+    "vscode": "^1.64.0"
   },
   "categories": [
     "Other"
