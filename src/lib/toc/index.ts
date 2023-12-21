@@ -37,6 +37,7 @@ export default class Toc {
         if (text.match(Constants.REG_TOC_START)) {
           tocStart = new Position(idx, 0);
         } else {
+          idx++;
           continue;
         }
       }
@@ -91,10 +92,7 @@ export default class Toc {
       return;
     }
 
-    const configManager = new ConfigManager();
-    const config = configManager.parseConfig(this.tocRange);
-    const headerManager = new HeaderManager(config);
-    const headers = await headerManager.getHeaders();
+    const headers = await this.headerManager.getHeaders();
 
     editor
       .edit((editBuilder) => {
