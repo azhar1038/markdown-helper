@@ -1,4 +1,4 @@
-import Toc from "./lib/Toc";
+import Toc from "./lib/toc/index";
 
 export default class MarkdownHelper {
   public async insertOrUpdateToc() {
