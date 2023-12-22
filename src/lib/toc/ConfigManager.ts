@@ -1,20 +1,18 @@
-import { Range, window } from "vscode";
+import { Range, window, workspace } from "vscode";
 import { getNextLineOutsideCodeBlock, isCodeBlockStartOrEnd } from "./utils";
 import Constants from "../Constants";
 
 export type Config = {
   minDepth: number;
   maxDepth: number;
-  headingText?: string;
-  prettier: boolean;
+  prettierIgnore: boolean;
 };
 
 export default class ConfigManager {
   private readonly defaultConfig: Config = {
     minDepth: 2,
     maxDepth: 4,
-    headingText: undefined,
-    prettier: false,
+    prettierIgnore: false,
   };
 
   private parseDepth(value: string) {
@@ -56,12 +54,8 @@ export default class ConfigManager {
             config.maxDepth = this.parseDepth(propertyValue);
             break;
 
-          case "prettier":
-            config.prettier = propertyValue === "true";
-            break;
-
-          case "headingText":
-            config.headingText = propertyValue;
+          case "prettierIgnore":
+            config.prettierIgnore = propertyValue === "true";
             break;
 
           default:
@@ -73,5 +67,24 @@ export default class ConfigManager {
     }
 
     return config;
+  }
+
+  public getModifiedConfig(config: Config): string[] {
+    const changes: string[] = [];
+    if (config.minDepth !== this.defaultConfig.minDepth) {
+      changes.push(`<!-- minDepth=${config.minDepth} -->`);
+    }
+
+    if (config.maxDepth !== this.defaultConfig.maxDepth) {
+      changes.push(`<!-- maxDepth=${config.maxDepth} -->`);
+    }
+
+    if (config.prettierIgnore !== this.defaultConfig.prettierIgnore) {
+      changes.push(`<!-- prettierIgnore=${config.prettierIgnore} -->`);
+    }
+
+    console.log(changes);
+
+    return changes;
   }
 }

@@ -1,21 +1,6 @@
-import {
-  DocumentSymbol,
-  Range,
-  SymbolKind,
-  Uri,
-  commands,
-  window,
-} from "vscode";
+import { DocumentSymbol, Uri, commands, window } from "vscode";
 import { Config } from "./ConfigManager";
-import Constants from "../Constants";
-import { generateSlug } from "./utils";
-
-export type Header = {
-  title: string;
-  depth: number;
-  range: Range;
-  slug: string;
-};
+import Header from "./Header";
 
 export default class HeaderManager {
   config: Config;
@@ -27,37 +12,28 @@ export default class HeaderManager {
   }
 
   private addHeader = (symbol: DocumentSymbol) => {
-    if (symbol.kind === SymbolKind.String) {
-      // Headers always have kind 14
-      const text = symbol.name;
-      const match = text.match(Constants.REG_HEADER);
+    const header = new Header().initializeFromSymbol(symbol);
+    if (!header) {
+      return;
+    }
 
-      if (!match) {
-        return;
-      }
+    const titleCount = this.headerCounter.get(header.title);
+    if (titleCount === undefined) {
+      this.headerCounter.set(header.title, 1);
+    } else {
+      this.headerCounter.set(header.title, titleCount + 1);
+      header.repeatCount = titleCount;
+    }
 
-      const depth = match[1].length;
-      let title = match[2];
-      const titleCount = this.headerCounter.get(title);
-      if (titleCount === undefined) {
-        this.headerCounter.set(title, 1);
-      } else {
-        this.headerCounter.set(title, titleCount + 1);
-        title = `${title.trimEnd()}-${titleCount}`;
-      }
+    if (
+      header.depth >= this.config.minDepth &&
+      header.depth <= this.config.maxDepth
+    ) {
+      this.headers.push(header);
+    }
 
-      if (depth >= this.config.minDepth && depth <= this.config.maxDepth) {
-        this.headers.push({
-          title,
-          depth,
-          range: symbol.range,
-          slug: generateSlug(title),
-        });
-      }
-
-      if (depth < this.config.maxDepth) {
-        symbol.children?.forEach((child) => this.addHeader(child));
-      }
+    if (header.depth < this.config.maxDepth) {
+      symbol.children.forEach((child) => this.addHeader(child));
     }
   };
 
@@ -74,16 +50,12 @@ export default class HeaderManager {
         fileUri
       );
 
-      symbols.forEach(this.addHeader);
+      symbols?.forEach(this.addHeader);
     } catch (err) {
       console.log(err);
       window.showErrorMessage("Failed to load headers");
     }
 
     return this.headers;
-  }
-
-  public getHeaderText(header: Header) {
-    return `[${header.title}](#${header.slug})`;
   }
 }

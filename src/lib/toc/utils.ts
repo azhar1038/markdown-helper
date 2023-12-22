@@ -22,7 +22,7 @@ export function getNextLineOutsideCodeBlock(
   return doc.lineCount - 1;
 }
 
-export function generateSlug(text: String) {
+export function generateSlug(text: string): string {
   return text
     .replace(/^\s+|\s+$/g, "") // trim leading/trailing white space
     .toLowerCase() // convert string to lowercase

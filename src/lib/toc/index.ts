@@ -2,7 +2,8 @@ import { Position, Range, TextEditorEdit, window } from "vscode";
 import Constants from "../Constants";
 import { getNextLineOutsideCodeBlock, isCodeBlockStartOrEnd } from "./utils";
 import ConfigManager, { Config } from "./ConfigManager";
-import HeaderManager, { Header } from "./HeaderManager";
+import HeaderManager from "./HeaderManager";
+import Header from "./Header";
 
 export default class Toc {
   private tocRange: Range;
@@ -25,7 +26,7 @@ export default class Toc {
     }
 
     let tocStart: Position | undefined;
-    let tocEnd = new Position(0, 0);
+    let tocEnd: Position | undefined;
     let idx = 0;
     while (idx < editor.document.lineCount) {
       if (isCodeBlockStartOrEnd(idx, editor.document)) {
@@ -69,21 +70,32 @@ export default class Toc {
       minHeaderDepth = Math.min(minHeaderDepth, header.depth);
     });
 
-    const headerText: string[] = [];
+    let headerText: string[] = [];
+    headerText.push(Constants.TOC_START);
+
+    headerText = headerText.concat(
+      this.configManager.getModifiedConfig(this.config)
+    );
+
+    headerText.push("");
+
+    if (this.config.prettierIgnore) {
+      headerText.push("<!-- prettier-ignore -->");
+    }
+
     headers.forEach((header) => {
       headerText.push(
-        "\t".repeat(header.depth - minHeaderDepth) +
+        "  ".repeat(header.depth - minHeaderDepth) +
           "- " +
-          this.headerManager.getHeaderText(header)
+          header.getMarkdownLink()
       );
     });
 
-    editBuilder.insert(
-      this.tocRange.start,
-      `<!-- Toc -->\n<!-- prettier-ignore -->\n${headerText.join(
-        "\n"
-      )}\n<!-- /Toc -->`
-    );
+    headerText.push("");
+
+    headerText.push(Constants.TOC_END);
+
+    editBuilder.insert(this.tocRange.start, headerText.join("\n"));
   }
 
   public async insertOrUpdate() {
