@@ -1,6 +1,7 @@
-import { DocumentSymbol, Uri, commands, window } from "vscode";
+import { DocumentSymbol, TextEditor, Uri, commands, window } from "vscode";
 import { Config } from "./ConfigManager";
 import Header from "./Header";
+import Constants from "../Constants";
 
 export default class HeaderManager {
   config: Config;
@@ -11,7 +12,7 @@ export default class HeaderManager {
     this.config = config;
   }
 
-  private addHeader = (symbol: DocumentSymbol) => {
+  private addHeader = (editor: TextEditor, symbol: DocumentSymbol) => {
     const header = new Header().initializeFromSymbol(symbol);
     if (!header) {
       return;
@@ -33,7 +34,7 @@ export default class HeaderManager {
     }
 
     if (header.depth < this.config.maxDepth) {
-      symbol.children.forEach((child) => this.addHeader(child));
+      symbol.children.forEach((child) => this.addHeader(editor, child));
     }
   };
 
@@ -50,7 +51,7 @@ export default class HeaderManager {
         fileUri
       );
 
-      symbols?.forEach(this.addHeader);
+      symbols?.forEach((symbol) => this.addHeader(editor, symbol));
     } catch (err) {
       console.log(err);
       window.showErrorMessage("Failed to load headers");

@@ -77,7 +77,7 @@ export default class Toc {
       this.configManager.getModifiedConfig(this.config)
     );
 
-    headerText.push("");
+    headerText.push(""); // Extra line
 
     if (this.config.prettierIgnore) {
       headerText.push("<!-- prettier-ignore -->");
@@ -85,17 +85,16 @@ export default class Toc {
 
     headers.forEach((header) => {
       headerText.push(
-        "  ".repeat(header.depth - minHeaderDepth) +
-          "- " +
+        Constants.TAB.repeat(header.depth - minHeaderDepth) +
+          Constants.LIST_SYMBOL +
+          " " +
           header.getMarkdownLink()
       );
     });
 
-    headerText.push("");
-
+    headerText.push(""); // Extra line
     headerText.push(Constants.TOC_END);
-
-    editBuilder.insert(this.tocRange.start, headerText.join("\n"));
+    editBuilder.insert(this.tocRange.start, headerText.join(Constants.EOL));
   }
 
   public async insertOrUpdate() {

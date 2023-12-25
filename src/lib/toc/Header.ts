@@ -20,8 +20,11 @@ export default class Header {
     }
 
     const text = symbol.name;
-    let match = text.match(Constants.REG_HEADER);
+    if (text.match(Constants.REG_TOC_HEADER_IGNORE)) {
+      return;
+    }
 
+    let match = text.match(Constants.REG_HEADER);
     if (!match) {
       return;
     }
