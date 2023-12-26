@@ -30,17 +30,31 @@
     "helper",
     "shortcut"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onLanguage:markdown"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "markdown-mate.insertToc",
+        "command": "markdown-mate.toc.insert",
         "title": "Markdown: Insert Table of Contents"
       },
       {
-        "command": "markdown-mate.removeToc",
+        "command": "markdown-mate.toc.remove",
         "title": "Markdown: Remove Table of Contents"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "markdown-mate.format.toggle.bold",
+        "key": "ctrl+shift+b",
+        "when": "editorLangId == markdown"
+      },
+      {
+        "command": "markdown-mate.format.toggle.italic",
+        "key": "ctrl+shift+i",
+        "when": "editorLangId == markdown"
       }
     ]
   },

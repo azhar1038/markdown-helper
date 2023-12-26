@@ -29,3 +29,7 @@ export function generateSlug(text: string): string {
     .replace(/[^a-z0-9 -]/g, "") // remove any non-alphanumeric characters
     .replace(/\s+/g, "-"); // replace spaces with hyphens
 }
+
+export function escapeRegExp(text: string) {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
+}

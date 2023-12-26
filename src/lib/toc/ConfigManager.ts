@@ -83,8 +83,6 @@ export default class ConfigManager {
       changes.push(`<!-- prettierIgnore=${config.prettierIgnore} -->`);
     }
 
-    console.log(changes);
-
     return changes;
   }
 }
