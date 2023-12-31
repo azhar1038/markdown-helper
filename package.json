@@ -38,11 +38,11 @@
     "commands": [
       {
         "command": "markdown-mate.toc.insert",
-        "title": "Markdown: Insert Table of Contents"
+        "title": "Markdown Mate: Insert/Update Table of Contents"
       },
       {
         "command": "markdown-mate.toc.remove",
-        "title": "Markdown: Remove Table of Contents"
+        "title": "Markdown Mate: Remove Table of Contents"
       }
     ],
     "keybindings": [
@@ -54,6 +54,21 @@
       {
         "command": "markdown-mate.format.toggle.italic",
         "key": "ctrl+shift+i",
+        "when": "editorLangId == markdown"
+      },
+      {
+        "command": "markdown-mate.format.toggle.inlinecode",
+        "key": "ctrl+`",
+        "when": "editorLangId == markdown"
+      },
+      {
+        "command": "markdown-mate.format.toggle.blockcode",
+        "key": "ctrl+shift+`",
+        "when": "editorLangId == markdown"
+      },
+      {
+        "command": "markdown-mate.format.toggle.blockquote",
+        "key": "ctrl+shift+q",
         "when": "editorLangId == markdown"
       }
     ]
