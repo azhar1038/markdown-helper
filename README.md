@@ -43,3 +43,5 @@ Open VS Code command palette using `Ctrl + Shift + P`, then search for the follo
   - Add Row above/below
   - Delete row
   - Delete column
+- Fix issues
+- Optimize
