@@ -47,4 +47,24 @@ export default class MarkdownMate {
     const table = new Table();
     table.format();
   }
+
+  public insertRowBefore() {
+    const table = new Table();
+    table.insertRowBeforeCurrentRow();
+  }
+
+  public insertRowAfter() {
+    const table = new Table();
+    table.insertRowAfterCurrentRow();
+  }
+
+  public insertColumnBefore() {
+    const table = new Table();
+    table.insertColumnBeforeCurrentColumn();
+  }
+
+  public insertColumnAfter() {
+    const table = new Table();
+    table.insertColumnAfterCurrentColumn();
+  }
 }

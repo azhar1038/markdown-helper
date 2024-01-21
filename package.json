@@ -51,6 +51,22 @@
       {
         "command": "markdown-mate.table.format",
         "title": "Markdown Mate: Format this Table"
+      },
+      {
+        "command": "markdown-mate.table.row.before",
+        "title": "Markdown Mate: Insert new row before"
+      },
+      {
+        "command": "markdown-mate.table.row.after",
+        "title": "Markdown Mate: Insert new row after"
+      },
+      {
+        "command": "markdown-mate.table.column.before",
+        "title": "Markdown Mate: Insert new column before"
+      },
+      {
+        "command": "markdown-mate.table.column.after",
+        "title": "Markdown Mate: Insert new column after"
       }
     ],
     "keybindings": [

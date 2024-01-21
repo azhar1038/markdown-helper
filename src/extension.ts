@@ -61,6 +61,30 @@ export function activate(context: ExtensionContext) {
     }
   );
 
+  const insertRowBefore = commands.registerCommand(
+    "markdown-mate.table.row.before", () => {
+      markdownMate.insertRowBefore();
+    }
+  );
+
+  const insertRowAfter = commands.registerCommand(
+    "markdown-mate.table.row.after", () => {
+      markdownMate.insertRowAfter();
+    }
+  );
+
+  const insertColumnBefore = commands.registerCommand(
+    "markdown-mate.table.column.before", () => {
+      markdownMate.insertColumnBefore();
+    }
+  );
+
+  const insertColumnAfter = commands.registerCommand(
+    "markdown-mate.table.column.after", () => {
+      markdownMate.insertColumnAfter();
+    }
+  );
+
   context.subscriptions.push(insertToc);
   context.subscriptions.push(removeToc);
   context.subscriptions.push(toggleBold);
@@ -69,6 +93,8 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(toggleBlockquote);
   context.subscriptions.push(insertTable);
   context.subscriptions.push(formatTable);
+  context.subscriptions.push(insertRowBefore);
+  context.subscriptions.push(insertRowAfter);
 }
 
 // This method is called when your extension is deactivated
