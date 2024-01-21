@@ -43,6 +43,14 @@
       {
         "command": "markdown-mate.toc.remove",
         "title": "Markdown Mate: Remove Table of Contents"
+      },
+      {
+        "command": "markdown-mate.table.insert",
+        "title": "Markdown Mate: Insert a Table"
+      },
+      {
+        "command": "markdown-mate.table.format",
+        "title": "Markdown Mate: Format this Table"
       }
     ],
     "keybindings": [

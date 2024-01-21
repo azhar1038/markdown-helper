@@ -1,4 +1,5 @@
 import MarkdownEditor from "./lib/MarkdownEditor";
+import Table from "./lib/table";
 import Toc from "./lib/toc/index";
 
 export default class MarkdownMate {
@@ -35,5 +36,15 @@ export default class MarkdownMate {
   public toggleBlockquote() {
     const markdownEditor = new MarkdownEditor();
     markdownEditor.toggleBlockquote();
+  }
+
+  public insertTable() {
+    const table = new Table();
+    table.insert();
+  }
+
+  public formatTable() {
+    const table = new Table();
+    table.format();
   }
 }

@@ -47,12 +47,28 @@ export function activate(context: ExtensionContext) {
     }
   );
 
+  const insertTable = commands.registerCommand(
+    "markdown-mate.table.insert",
+    () => {
+      markdownMate.insertTable();
+    }
+  );
+
+  const formatTable = commands.registerCommand(
+    "markdown-mate.table.format",
+    () => {
+      markdownMate.formatTable();
+    }
+  );
+
   context.subscriptions.push(insertToc);
   context.subscriptions.push(removeToc);
   context.subscriptions.push(toggleBold);
   context.subscriptions.push(toggleItalic);
   context.subscriptions.push(toggleInlineCode);
   context.subscriptions.push(toggleBlockquote);
+  context.subscriptions.push(insertTable);
+  context.subscriptions.push(formatTable);
 }
 
 // This method is called when your extension is deactivated
