@@ -1,120 +1,179 @@
-import { Position, Range, window } from "vscode";
+import { Position, Range, TextEditor, window } from "vscode";
 import Constants from "../Constants";
+import Column from "./Column";
+import Cell from "./Cell";
 
 export default class Table {
-  public format() {
+  startLine: number;
+  endLine: number;
+  columns: Column[];
+  editor: TextEditor;
+
+  constructor() {
     const editor = window.activeTextEditor;
     if (!editor) {
-      return;
+      const errorMsg = "No editor found";
+      window.showErrorMessage(errorMsg);
+      throw new Error(errorMsg);
     }
-    const document = editor.document;
 
+    this.editor = editor;
+    const document = editor.document;
     const curPos = editor.selection.active;
     const curLine = curPos.line;
 
     let startLine = curLine;
     let endLine = curLine;
+    const columnSeparator = new RegExp(/(?<!\\)\|/);
+    const headerSeparator = new RegExp(/:?-{3,}:?/);
 
+    let found = false; // Found | in current line
     while (startLine >= 0) {
       const line = document.lineAt(startLine).text;
-      if (line.length < 2) {
-        break;
-      }
-      const firstChar = line[0];
-      const lastChar = line[line.length - 1];
-      if (firstChar === "|" && lastChar === "|") {
+      if (columnSeparator.test(line)) {
+        found = true;
         startLine--;
       } else {
         break;
       }
     }
 
-    startLine++;
+    if (found) {
+      startLine++;
+    }
 
+    found = false;
     while (endLine < document.lineCount) {
       const line = document.lineAt(endLine).text;
-      if (line.length < 2) {
-        break;
-      }
-      const firstChar = line[0];
-      const lastChar = line[line.length - 1];
-      if (firstChar === "|" && lastChar === "|") {
+      if (columnSeparator.test(line)) {
+        found = true;
         endLine++;
       } else {
         break;
       }
     }
 
-    endLine--;
+    if (found) {
+      endLine--;
+    }
 
-    // return;
-    const colWidth: number[] = [];
+    this.startLine = startLine;
+    this.endLine = endLine;
+    this.columns = [];
 
-    for (let idx = startLine; idx <= endLine; idx++) {
-      const line = document.lineAt(idx).text;
-      const columns: string[] = line.split(/(?<!\\)\|/);
-      const headerSeparator = new RegExp(/-+/);
-      if (idx === startLine + 1) {
-        for (let c = 1; c < columns.length - 1; c++) {
-          if (!headerSeparator.test(columns[c].trim())) {
-            // Not a table
-            return;
-          }
-        }
+    if (this.startLine === this.endLine) {
+      // No table exists
+      return;
+    }
 
-        // Don't consider header length
-        continue;
+    // Verify if it is actually a table
+    // Line after header must be separators
+
+    // Create columns and headers
+    let line = document.lineAt(startLine).text;
+    let contents = this.splitLineToColumns(line);
+    for (let col = 0; col < contents.length; col++) {
+      const column = new Column();
+      column.setHeader(contents[col]);
+      this.columns.push(column);
+    }
+
+    // Header separators
+    line = document.lineAt(startLine + 1).text;
+    contents = this.splitLineToColumns(line);
+    if (contents.length !== this.columns.length) {
+      this.columns = [];
+      this.endLine = this.startLine;
+      return;
+    }
+
+    for (let col = 0; col < contents.length; col++) {
+      if (!headerSeparator.test(contents[col])) {
+        this.columns = [];
+        this.endLine = this.startLine;
+        return;
       }
-
-      // Ignore first and last string, which should be empty
-      for (let c = 1; c < columns.length - 1; c++) {
-        const cellText = columns[c].trim();
-        if (c > colWidth.length) {
-          colWidth.push(cellText.length);
-        } else {
-          colWidth[c - 1] = Math.max(colWidth[c - 1], cellText.length);
-        }
-      }
+      this.columns[col].setAlignment(contents[col]);
     }
-
-    let tableStr = "";
-
-    const columns: string[] = document
-      .lineAt(startLine)
-      .text.split(/(?<!\\)\|/);
-
-    for (let c = 1; c < columns.length - 1; c++) {
-      tableStr += `| ${columns[c].trim()}`.padEnd(colWidth[c - 1] + 2) + " ";
-    }
-    tableStr += "|" + Constants.EOL;
-
-    for (let c = 1; c < columns.length - 1; c++) {
-      tableStr += "| ".padEnd(colWidth[c - 1] + 2, "-") + " ";
-    }
-    tableStr += "|" + Constants.EOL;
 
     for (let idx = startLine + 2; idx <= endLine; idx++) {
       const line = document.lineAt(idx).text;
-      const columns: string[] = line.split(/(?<!\\)\|/);
-      // Ignore first and last string, which should be empty
-      for (let c = 1; c < columns.length - 1; c++) {
-        tableStr += `| ${columns[c].trim()}`.padEnd(colWidth[c - 1] + 2) + " ";
+      const contents = this.splitLineToColumns(line);
+      if (contents.length > this.columns.length) {
+        const mergedCell = contents.splice(contents.length - 1).join("\\|");
+        contents.push(mergedCell);
       }
-      tableStr += "|" + Constants.EOL;
+
+      for (let col = 0; col < contents.length; col++) {
+        const cell =
+          contents.length > col ? new Cell(contents[col]) : new Cell();
+        this.columns[col].insertCell(cell);
+      }
+    }
+  }
+
+  private splitLineToColumns(line: string) {
+    const contents = line.split(/(?<!\\)\|/);
+    if (line.endsWith("|")) {
+      contents.pop();
     }
 
-    editor
+    if (line.startsWith("|")) {
+      contents.splice(0, 1);
+    }
+
+    return contents;
+  }
+
+  public format() {
+    const tableLines = [];
+    const headerLine = [];
+    const headerSeparatorLine = [];
+    for (let col = 0; col < this.columns.length; col++) {
+      headerLine.push(
+        this.columns[col].header.formattedContent(this.columns[col].width)
+      );
+      headerSeparatorLine.push(this.columns[col].getHeaderSeparator());
+    }
+
+    tableLines.push(headerLine.join("|"));
+    tableLines.push(headerSeparatorLine.join("|"));
+
+    for (let cellIdx = 0; cellIdx < this.columns[0].cells.length; cellIdx++) {
+      const currLine = [];
+      for (let col = 0; col < this.columns.length; col++) {
+        const currCol = this.columns[col];
+        currLine.push(currCol.cells[cellIdx].formattedContent(currCol.width));
+      }
+      tableLines.push(currLine.join("|"));
+    }
+
+    let tableStr = "";
+    tableLines.forEach((line) => {
+      tableStr += `|${line}|${Constants.EOL}`;
+    });
+
+    this.editor
       .edit((editBuilder) => {
-        editBuilder.replace(new Range(startLine, 0, endLine + 1, 0), tableStr);
+        editBuilder.replace(
+          new Range(this.startLine, 0, this.endLine + 1, 0),
+          tableStr
+        );
       })
       .then((success) => {
         if (success) {
-          editor.document.save();
+          this.editor.document.save();
         }
       });
   }
 
   public async insert(): Promise<void> {
+    console.log(this.startLine, this.endLine);
+    if (this.startLine !== this.endLine) {
+      window.showInformationMessage("Cannot insert table inside another table");
+      return;
+    }
+
     const rowsInput = await window.showInputBox({
       prompt: "How many rows needed?",
     });
@@ -134,255 +193,68 @@ export default class Table {
       cols = 1;
     }
 
-    const editor = window.activeTextEditor;
-    if (!editor) {
-      return;
+    for (let col = 0; col < cols; col++) {
+      const column = new Column();
+      column.setHeader(`Header ${col + 1}`);
+      this.columns.push(column);
     }
 
-    let tablestr = "";
-    const curPos = editor.selection.active;
-    if (curPos.character > 0) {
-      tablestr = Constants.EOL;
-    }
-
-    for (let c = 0; c < cols; c++) {
-      tablestr += `| Heading ${c + 1} `;
-    }
-
-    tablestr += "|" + Constants.EOL;
-
-    for (let c = 0; c < cols; c++) {
-      tablestr += "| --- ";
-    }
-
-    tablestr += "|" + Constants.EOL;
-
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        tablestr += "|     ";
-      }
-
-      tablestr += "|";
-      if (r < rows - 1) {
-        tablestr += Constants.EOL;
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        this.columns[col].cells.push(new Cell());
       }
     }
 
-    editor
-      .edit((editBuilder) => {
-        editBuilder.insert(curPos, tablestr);
-      })
-      .then((success) => {
-        if (success) {
-          this.format();
-        }
-      });
+    this.format();
   }
 
   private insertRow(lineNumber: number) {
-    // this.format();
-    const editor = window.activeTextEditor;
-    if (!editor) {
+    if (lineNumber <= this.startLine + 1 || lineNumber > this.endLine) {
       return;
     }
-    const document = editor.document;
 
-    const curPos = editor.selection.active;
-    const curLine = curPos.line;
-
-    let startLine = curLine;
-    let endLine = curLine;
-
-    while (startLine >= 0) {
-      const line = document.lineAt(startLine).text;
-      if (line.length < 2) {
-        break;
-      }
-      const firstChar = line[0];
-      const lastChar = line[line.length - 1];
-      if (firstChar === "|" && lastChar === "|") {
-        startLine--;
-      } else {
-        break;
-      }
-    }
-
-    startLine++;
-
-    while (endLine < document.lineCount) {
-      const line = document.lineAt(endLine).text;
-      if (line.length < 2) {
-        break;
-      }
-      const firstChar = line[0];
-      const lastChar = line[line.length - 1];
-      if (firstChar === "|" && lastChar === "|") {
-        endLine++;
-      } else {
-        break;
-      }
-    }
-
-    endLine--;
-
-    const colWidth: number[] = [];
-
-    for (let idx = startLine; idx <= endLine; idx++) {
-      const line = document.lineAt(idx).text;
-      const columns: string[] = line.split(/(?<!\\)\|/);
-      const headerSeparator = new RegExp(/-+/);
-      if (idx === startLine + 1) {
-        for (let c = 1; c < columns.length - 1; c++) {
-          if (!headerSeparator.test(columns[c].trim())) {
-            // Not a table
-            return;
-          }
-        }
-
-        // Don't consider header length
-        continue;
-      }
-
-      // Ignore first and last string, which should be empty
-      for (let c = 1; c < columns.length - 1; c++) {
-        const cellText = columns[c].trim();
-        if (c > colWidth.length) {
-          colWidth.push(cellText.length);
-        } else {
-          colWidth[c - 1] = Math.max(colWidth[c - 1], cellText.length);
-        }
-      }
-    }
-
-    let newRow = "";
-    for (const c of colWidth) {
-      newRow += "|".padEnd(c + 3);
-    }
-    newRow += "|" + Constants.EOL;
-
-    editor.edit(editBuilder => {
-      editBuilder.insert(new Position(lineNumber, 0), newRow);
-    }).then(success => {
-      if (success) {
-        document.save();
-      }
-    });
+    const rowNumber = lineNumber - this.startLine - 2;
+    this.columns.forEach((column) => column.insertCell(new Cell(), rowNumber));
+    this.format();
   }
 
   public insertRowBeforeCurrentRow() {
-    const editor = window.activeTextEditor;
-    if (!editor) {
-      return;
-    }
-
-    const curPos = editor.selection.active;
+    const curPos = this.editor.selection.active;
     this.insertRow(curPos.line);
   }
 
   public insertRowAfterCurrentRow() {
-    const editor = window.activeTextEditor;
-    if (!editor) {
-      return;
-    }
-
-    const curPos = editor.selection.active;
+    const curPos = this.editor.selection.active;
     this.insertRow(curPos.line + 1);
   }
 
-  private insertCol(characterNumber: number) {
-    const editor = window.activeTextEditor;
-    if (!editor) {
-      return;
-    }
-    const document = editor.document;
-
-    const curPos = editor.selection.active;
-    const curLine = curPos.line;
-
-    let startLine = curLine;
-    let endLine = curLine;
-
-    while (startLine >= 0) {
-      const line = document.lineAt(startLine).text;
-      if (line.length < 2) {
-        break;
-      }
-      const firstChar = line[0];
-      const lastChar = line[line.length - 1];
-      if (firstChar === "|" && lastChar === "|") {
-        startLine--;
-      } else {
-        break;
-      }
+  private insertCol(columnNumber: number) {
+    const rowCount = this.columns[0].cells.length;
+    const column = new Column();
+    column.setHeader("Header");
+    for (let idx = 0; idx < rowCount; idx++) {
+      column.cells.push(new Cell());
     }
 
-    startLine++;
-
-    while (endLine < document.lineCount) {
-      const line = document.lineAt(endLine).text;
-      if (line.length < 2) {
-        break;
-      }
-      const firstChar = line[0];
-      const lastChar = line[line.length - 1];
-      if (firstChar === "|" && lastChar === "|") {
-        endLine++;
-      } else {
-        break;
-      }
-    }
-
-    endLine--;
-
-    editor.edit(editBuilder => {
-      const width = 7;
-      for (let idx = startLine; idx <= endLine; idx++) {
-        let text;
-        if (idx === startLine) {
-          text = 'Heading';
-        } else if (idx === startLine + 1) {
-          text = ''.padEnd(width, '-');
-        } else {
-          text = ''.padEnd(width);
-        }
-
-        editBuilder.insert(new Position(idx, characterNumber), ` ${text} |`);
-      }
-    }).then(success => {
-      if (success) {
-        document.save();
-      }
-    });
-
+    this.columns.splice(columnNumber, 0, column);
+    this.format();
   }
 
   public insertColumnBeforeCurrentColumn() {
-    const editor = window.activeTextEditor;
-    if (!editor) {
-      return;
-    }
-
-    const curPos = editor.selection.active;
-    for (let idx = curPos.character; idx >= 0; idx--) {
-      if (editor.document.getText(new Range(curPos.line, idx, curPos.line, idx + 1)) === '|') {
-        this.insertCol(idx + 1);
-        break;
-      }
-    }
+    const curPos = this.editor.selection.active;
+    const text = this.editor.document.getText(
+      new Range(new Position(curPos.line, 0), curPos)
+    );
+    const contents = this.splitLineToColumns(text);
+    this.insertCol(contents.length - 1);
   }
 
   public insertColumnAfterCurrentColumn() {
-    const editor = window.activeTextEditor;
-    if (!editor) {
-      return;
-    }
-
-    const curPos = editor.selection.active;
-    for (let idx = curPos.character; idx < editor.document.lineAt(curPos.line).text.length; idx++) {
-      if (editor.document.getText(new Range(curPos.line, idx, curPos.line, idx + 1)) === '|') {
-        this.insertCol(idx + 1);
-        break;
-      }
-    }
+    const curPos = this.editor.selection.active;
+    const text = this.editor.document.getText(
+      new Range(new Position(curPos.line, 0), curPos)
+    );
+    const contents = this.splitLineToColumns(text);
+    this.insertCol(contents.length);
   }
 }
