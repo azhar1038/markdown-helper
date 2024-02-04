@@ -38,35 +38,35 @@
     "commands": [
       {
         "command": "markdown-mate.toc.insert",
-        "title": "Markdown Mate: Insert/Update Table of Contents"
+        "title": "MM TOC: Insert/Update Table of Contents"
       },
       {
         "command": "markdown-mate.toc.remove",
-        "title": "Markdown Mate: Remove Table of Contents"
+        "title": "MM TOC: Remove Table of Contents"
       },
       {
         "command": "markdown-mate.table.insert",
-        "title": "Markdown Mate: Insert a Table"
+        "title": "MM Table: Insert a Table"
       },
       {
         "command": "markdown-mate.table.format",
-        "title": "Markdown Mate: Format this Table"
+        "title": "MM Table: Format this Table"
       },
       {
         "command": "markdown-mate.table.row.before",
-        "title": "Markdown Mate: Insert new row before"
+        "title": "MM Table: Insert new row before"
       },
       {
         "command": "markdown-mate.table.row.after",
-        "title": "Markdown Mate: Insert new row after"
+        "title": "MM Table: Insert new row after"
       },
       {
         "command": "markdown-mate.table.column.before",
-        "title": "Markdown Mate: Insert new column before"
+        "title": "MM Table: Insert new column before"
       },
       {
         "command": "markdown-mate.table.column.after",
-        "title": "Markdown Mate: Insert new column after"
+        "title": "MM Table: Insert new column after"
       }
     ],
     "keybindings": [
@@ -95,7 +95,41 @@
         "key": "ctrl+shift+q",
         "when": "editorLangId == markdown"
       }
-    ]
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "markdown-mate.table.insert",
+          "when": "editorLangId == markdown",
+          "group": "markdown-mate@table"
+        },
+        {
+          "command": "markdown-mate.table.format",
+          "when": "editorLangId == markdown",
+          "group": "markdown-mate@table"
+        },
+        {
+          "command": "markdown-mate.table.column.before",
+          "when": "editorLangId == markdown",
+          "group": "markdown-mate@table"
+        },
+        {
+          "command": "markdown-mate.table.column.after",
+          "when": "editorLangId == markdown",
+          "group": "markdown-mate@table"
+        },
+        {
+          "command": "markdown-mate.table.row.before",
+          "when": "editorLangId == markdown",
+          "group": "markdown-mate@table"
+        },
+        {
+          "command": "markdown-mate.table.row.after",
+          "when": "editorLangId == markdown",
+          "group": "markdown-mate@table"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

@@ -24,13 +24,11 @@ export default class Table {
 
     let startLine = curLine;
     let endLine = curLine;
-    const columnSeparator = new RegExp(/(?<!\\)\|/);
-    const headerSeparator = new RegExp(/:?-{3,}:?/);
 
     let found = false; // Found | in current line
     while (startLine >= 0) {
       const line = document.lineAt(startLine).text;
-      if (columnSeparator.test(line)) {
+      if (Constants.REG_TABLE_COLUMN_SEPARATOR.test(line)) {
         found = true;
         startLine--;
       } else {
@@ -45,7 +43,7 @@ export default class Table {
     found = false;
     while (endLine < document.lineCount) {
       const line = document.lineAt(endLine).text;
-      if (columnSeparator.test(line)) {
+      if (Constants.REG_TABLE_COLUMN_SEPARATOR.test(line)) {
         found = true;
         endLine++;
       } else {
@@ -88,7 +86,7 @@ export default class Table {
     }
 
     for (let col = 0; col < contents.length; col++) {
-      if (!headerSeparator.test(contents[col])) {
+      if (!Constants.REG_TABLE_HEADER_SEPARATOR.test(contents[col])) {
         this.columns = [];
         this.endLine = this.startLine;
         return;
@@ -113,7 +111,7 @@ export default class Table {
   }
 
   private splitLineToColumns(line: string) {
-    const contents = line.split(/(?<!\\)\|/);
+    const contents = line.split(Constants.REG_TABLE_COLUMN_SEPARATOR);
     if (line.endsWith("|")) {
       contents.pop();
     }

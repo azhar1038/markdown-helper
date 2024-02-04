@@ -1,4 +1,4 @@
-export enum TableAlignment {
+export enum TableColumnAlignment {
   LEFT,
   CENTER,
   RIGHT,

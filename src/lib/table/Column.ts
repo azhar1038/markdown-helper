@@ -1,16 +1,23 @@
 import Cell from "./Cell";
-import Header from "./Header";
-import { TableAlignment } from "./enums";
+import { TableColumnAlignment } from "./enums";
 
 export default class Column {
+  private _header: Cell = new Cell();
+  private _alignment: TableColumnAlignment = TableColumnAlignment.LEFT;
   width: number = 5; // Min width
-  alignment: TableAlignment = TableAlignment.LEFT;
-  header: Header = new Header();
   cells: Cell[] = [];
 
+  get header(): Cell {
+    return this._header;
+  }
+
   setHeader(text: string) {
-    this.header = new Header(text);
-    this.width = Math.max(this.width, this.header.width);
+    this._header = new Cell(text);
+    this.width = Math.max(this.width, this._header.width);
+  }
+
+  get alignment(): TableColumnAlignment {
+    return this._alignment;
   }
 
   setAlignment(separator: string) {
@@ -19,11 +26,11 @@ export default class Column {
     const end = separator.endsWith(":");
 
     if (start && end) {
-      this.alignment = TableAlignment.CENTER;
+      this._alignment = TableColumnAlignment.CENTER;
     } else if (end) {
-      this.alignment = TableAlignment.RIGHT;
+      this._alignment = TableColumnAlignment.RIGHT;
     } else {
-      this.alignment = TableAlignment.LEFT;
+      this._alignment = TableColumnAlignment.LEFT;
     }
   }
 
@@ -49,7 +56,7 @@ export default class Column {
 
     if (cellWidth === this.width) {
       // Width may change
-      this.width = this.header.width;
+      this.width = this._header.width;
       this.cells.forEach((cell) => {
         this.width = Math.max(this.width, cell.width);
       });
@@ -57,10 +64,11 @@ export default class Column {
   }
 
   getHeaderSeparator(): string {
+    console.log(this._alignment);
     const separator = "-".repeat(this.width - 4);
-    if ((this.alignment = TableAlignment.CENTER)) {
+    if (this._alignment === TableColumnAlignment.CENTER) {
       return ` :${separator}: `;
-    } else if ((this.alignment = TableAlignment.RIGHT)) {
+    } else if (this._alignment === TableColumnAlignment.RIGHT) {
       return ` -${separator}: `;
     } else {
       return ` -${separator}- `;
