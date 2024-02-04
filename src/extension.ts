@@ -62,26 +62,44 @@ export function activate(context: ExtensionContext) {
   );
 
   const insertRowBefore = commands.registerCommand(
-    "markdown-mate.table.row.before", () => {
+    "markdown-mate.table.row.before",
+    () => {
       markdownMate.insertRowBefore();
     }
   );
 
   const insertRowAfter = commands.registerCommand(
-    "markdown-mate.table.row.after", () => {
+    "markdown-mate.table.row.after",
+    () => {
       markdownMate.insertRowAfter();
     }
   );
 
   const insertColumnBefore = commands.registerCommand(
-    "markdown-mate.table.column.before", () => {
+    "markdown-mate.table.column.before",
+    () => {
       markdownMate.insertColumnBefore();
     }
   );
 
   const insertColumnAfter = commands.registerCommand(
-    "markdown-mate.table.column.after", () => {
+    "markdown-mate.table.column.after",
+    () => {
       markdownMate.insertColumnAfter();
+    }
+  );
+
+  const deleteCurrentColumn = commands.registerCommand(
+    "markdown-mate.table.column.delete",
+    () => {
+      markdownMate.deleteCurrentColumn();
+    }
+  );
+
+  const deleteCurrentRow = commands.registerCommand(
+    "markdown-mate.table.row.delete",
+    () => {
+      markdownMate.deleteCurrentRow();
     }
   );
 
@@ -95,6 +113,10 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(formatTable);
   context.subscriptions.push(insertRowBefore);
   context.subscriptions.push(insertRowAfter);
+  context.subscriptions.push(insertColumnBefore);
+  context.subscriptions.push(insertColumnAfter);
+  context.subscriptions.push(deleteCurrentColumn);
+  context.subscriptions.push(deleteCurrentRow);
 }
 
 // This method is called when your extension is deactivated

@@ -220,6 +220,15 @@ export default class Table {
     this.format();
   }
 
+  private deleteRow(rowNumber: number) {
+    if (rowNumber < 0 || rowNumber > this.columns[0].cells.length) {
+      return;
+    }
+
+    this.columns.forEach((column) => column.removeCell(rowNumber));
+    this.format();
+  }
+
   public insertRowBeforeCurrentRow() {
     const currRow = this.getCurrentRow();
     this.insertRow(currRow);
@@ -230,20 +239,9 @@ export default class Table {
     this.insertRow(curRow + 1);
   }
 
-  private insertCol(columnNumber: number) {
-    if (columnNumber < 0 || columnNumber > this.columns.length) {
-      return;
-    }
-
-    const rowCount = this.columns[0].cells.length;
-    const column = new Column();
-    column.setHeader("Header");
-    for (let idx = 0; idx < rowCount; idx++) {
-      column.cells.push(new Cell());
-    }
-
-    this.columns.splice(columnNumber, 0, column);
-    this.format();
+  public deleteCurrentRow() {
+    const currRow = this.getCurrentRow();
+    this.deleteRow(currRow);
   }
 
   private getCurrentColumn() {
@@ -275,20 +273,53 @@ export default class Table {
         break;
       }
 
-      column++;
+      if (idx < nextIdx) {
+        column++;
+      }
+
       idx = nextIdx;
     }
 
     return column;
   }
 
+  private insertColumn(columnNumber: number) {
+    if (columnNumber < 0 || columnNumber > this.columns.length) {
+      return;
+    }
+
+    const rowCount = this.columns[0].cells.length;
+    const column = new Column();
+    column.setHeader("Header");
+    for (let idx = 0; idx < rowCount; idx++) {
+      column.cells.push(new Cell());
+    }
+
+    this.columns.splice(columnNumber, 0, column);
+    this.format();
+  }
+
+  private deleteColumn(columnNumber: number) {
+    if (columnNumber < 0 || columnNumber >= this.columns.length) {
+      return;
+    }
+
+    this.columns.splice(columnNumber, 1);
+    this.format();
+  }
+
   public insertColumnBeforeCurrentColumn() {
     const column = this.getCurrentColumn();
-    this.insertCol(column - 1);
+    this.insertColumn(column);
   }
 
   public insertColumnAfterCurrentColumn() {
     const column = this.getCurrentColumn();
-    this.insertCol(column);
+    this.insertColumn(column + 1);
+  }
+
+  public deleteCurrentColumn() {
+    const currCol = this.getCurrentColumn();
+    this.deleteColumn(currCol);
   }
 }

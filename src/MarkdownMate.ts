@@ -67,4 +67,14 @@ export default class MarkdownMate {
     const table = new Table();
     table.insertColumnAfterCurrentColumn();
   }
+
+  public deleteCurrentColumn() {
+    const table = new Table();
+    table.deleteCurrentColumn();
+  }
+
+  public deleteCurrentRow() {
+    const table = new Table();
+    table.deleteCurrentRow();
+  }
 }

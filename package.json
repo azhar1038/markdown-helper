@@ -67,6 +67,14 @@
       {
         "command": "markdown-mate.table.column.after",
         "title": "MM Table: Insert new column after"
+      },
+      {
+        "command": "markdown-mate.table.column.delete",
+        "title": "MM Table: Delete current column"
+      },
+      {
+        "command": "markdown-mate.table.row.delete",
+        "title": "MM Table: Delete current row"
       }
     ],
     "keybindings": [
@@ -125,6 +133,16 @@
         },
         {
           "command": "markdown-mate.table.row.after",
+          "when": "editorLangId == markdown",
+          "group": "markdown-mate@table"
+        },
+        {
+          "command": "markdown-mate.table.column.delete",
+          "when": "editorLangId == markdown",
+          "group": "markdown-mate@table"
+        },
+        {
+          "command": "markdown-mate.table.row.delete",
           "when": "editorLangId == markdown",
           "group": "markdown-mate@table"
         }
