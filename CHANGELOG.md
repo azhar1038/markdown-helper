@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Command and Context menu to insert row before/after current row
 - Command and Context menu to insert column before/after current column
 - Command and Context menu to delete current row or column
+- Command and Context menu to change alignment of current column
 
 ## [0.0.2] - 2023-12-31
 

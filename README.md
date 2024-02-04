@@ -31,6 +31,7 @@ Open VS Code command palette using `Ctrl + Shift + P`, then search for the follo
 - MM Table: Insert new column after
 - MM Table: Delete current column
 - MM Table: Delete current row
+- MM Table: Change column alignment
 
 ## Shortcuts
 
@@ -52,6 +53,7 @@ Table related commands are also available through context menu. Just right click
 - MM Table: Insert new column after
 - MM Table: Delete current column
 - MM Table: Delete current row
+- MM Table: Change column alignment
 
 ## Future plans
 
@@ -59,5 +61,6 @@ Table related commands are also available through context menu. Just right click
 - Add feature to change text to lowercase
 - Add feature to add link template
 - Add feature to add image template
+- Format cell text based on alignment
 - Fix issues
 - Optimize
