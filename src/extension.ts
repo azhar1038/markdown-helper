@@ -47,12 +47,84 @@ export function activate(context: ExtensionContext) {
     }
   );
 
+  const insertTable = commands.registerCommand(
+    "markdown-mate.table.insert",
+    () => {
+      markdownMate.insertTable();
+    }
+  );
+
+  const formatTable = commands.registerCommand(
+    "markdown-mate.table.format",
+    () => {
+      markdownMate.formatTable();
+    }
+  );
+
+  const insertRowBefore = commands.registerCommand(
+    "markdown-mate.table.row.before",
+    () => {
+      markdownMate.insertRowBefore();
+    }
+  );
+
+  const insertRowAfter = commands.registerCommand(
+    "markdown-mate.table.row.after",
+    () => {
+      markdownMate.insertRowAfter();
+    }
+  );
+
+  const insertColumnBefore = commands.registerCommand(
+    "markdown-mate.table.column.before",
+    () => {
+      markdownMate.insertColumnBefore();
+    }
+  );
+
+  const insertColumnAfter = commands.registerCommand(
+    "markdown-mate.table.column.after",
+    () => {
+      markdownMate.insertColumnAfter();
+    }
+  );
+
+  const deleteCurrentColumn = commands.registerCommand(
+    "markdown-mate.table.column.delete",
+    () => {
+      markdownMate.deleteCurrentColumn();
+    }
+  );
+
+  const deleteCurrentRow = commands.registerCommand(
+    "markdown-mate.table.row.delete",
+    () => {
+      markdownMate.deleteCurrentRow();
+    }
+  );
+
+  const changeColumnAlignment = commands.registerCommand(
+    "markdown-mate.table.column.align",
+    () => {
+      markdownMate.changeColumnAlignment();
+    }
+  );
+
   context.subscriptions.push(insertToc);
   context.subscriptions.push(removeToc);
   context.subscriptions.push(toggleBold);
   context.subscriptions.push(toggleItalic);
   context.subscriptions.push(toggleInlineCode);
   context.subscriptions.push(toggleBlockquote);
+  context.subscriptions.push(insertTable);
+  context.subscriptions.push(formatTable);
+  context.subscriptions.push(insertRowBefore);
+  context.subscriptions.push(insertRowAfter);
+  context.subscriptions.push(insertColumnBefore);
+  context.subscriptions.push(insertColumnAfter);
+  context.subscriptions.push(deleteCurrentColumn);
+  context.subscriptions.push(deleteCurrentRow);
+  context.subscriptions.push(changeColumnAlignment);
 }
 
 // This method is called when your extension is deactivated

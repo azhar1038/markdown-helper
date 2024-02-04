@@ -2,7 +2,7 @@
   "name": "markdown-mate",
   "displayName": "Markdown Mate",
   "description": "Some commands to help with Markdown files",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "icon": "images/logo.png",
   "preview": true,
   "author": {
@@ -38,11 +38,47 @@
     "commands": [
       {
         "command": "markdown-mate.toc.insert",
-        "title": "Markdown Mate: Insert/Update Table of Contents"
+        "title": "MM TOC: Insert/Update Table of Contents"
       },
       {
         "command": "markdown-mate.toc.remove",
-        "title": "Markdown Mate: Remove Table of Contents"
+        "title": "MM TOC: Remove Table of Contents"
+      },
+      {
+        "command": "markdown-mate.table.insert",
+        "title": "MM Table: Insert a Table"
+      },
+      {
+        "command": "markdown-mate.table.format",
+        "title": "MM Table: Format this Table"
+      },
+      {
+        "command": "markdown-mate.table.row.before",
+        "title": "MM Table: Insert new row before"
+      },
+      {
+        "command": "markdown-mate.table.row.after",
+        "title": "MM Table: Insert new row after"
+      },
+      {
+        "command": "markdown-mate.table.column.before",
+        "title": "MM Table: Insert new column before"
+      },
+      {
+        "command": "markdown-mate.table.column.after",
+        "title": "MM Table: Insert new column after"
+      },
+      {
+        "command": "markdown-mate.table.column.delete",
+        "title": "MM Table: Delete current column"
+      },
+      {
+        "command": "markdown-mate.table.row.delete",
+        "title": "MM Table: Delete current row"
+      },
+      {
+        "command": "markdown-mate.table.column.align",
+        "title": "MM Table: Change column alignment"
       }
     ],
     "keybindings": [
@@ -71,7 +107,56 @@
         "key": "ctrl+shift+q",
         "when": "editorLangId == markdown"
       }
-    ]
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "markdown-mate.table.insert",
+          "when": "editorLangId == markdown",
+          "group": "markdown-mate@table"
+        },
+        {
+          "command": "markdown-mate.table.format",
+          "when": "editorLangId == markdown",
+          "group": "markdown-mate@table"
+        },
+        {
+          "command": "markdown-mate.table.column.before",
+          "when": "editorLangId == markdown",
+          "group": "markdown-mate@table"
+        },
+        {
+          "command": "markdown-mate.table.column.after",
+          "when": "editorLangId == markdown",
+          "group": "markdown-mate@table"
+        },
+        {
+          "command": "markdown-mate.table.row.before",
+          "when": "editorLangId == markdown",
+          "group": "markdown-mate@table"
+        },
+        {
+          "command": "markdown-mate.table.row.after",
+          "when": "editorLangId == markdown",
+          "group": "markdown-mate@table"
+        },
+        {
+          "command": "markdown-mate.table.column.delete",
+          "when": "editorLangId == markdown",
+          "group": "markdown-mate@table"
+        },
+        {
+          "command": "markdown-mate.table.row.delete",
+          "when": "editorLangId == markdown",
+          "group": "markdown-mate@table"
+        },
+        {
+          "command": "markdown-mate.table.column.align",
+          "when": "editorLangId == markdown",
+          "group": "markdown-mate@table"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
