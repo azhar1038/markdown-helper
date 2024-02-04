@@ -2,7 +2,7 @@
   "name": "markdown-mate",
   "displayName": "Markdown Mate",
   "description": "Some commands to help with Markdown files",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "icon": "images/logo.png",
   "preview": true,
   "author": {
