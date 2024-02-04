@@ -2,6 +2,7 @@ import { Position, Range, TextEditor, window } from "vscode";
 import Constants from "../Constants";
 import Column from "./Column";
 import Cell from "./Cell";
+import { TableColumnAlignment } from "./enums";
 
 export default class Table {
   startLine: number;
@@ -321,5 +322,29 @@ export default class Table {
   public deleteCurrentColumn() {
     const currCol = this.getCurrentColumn();
     this.deleteColumn(currCol);
+  }
+
+  public async changeColumnAlignment() {
+    const currCol = this.getCurrentColumn();
+    if (currCol < 0 || currCol >= this.columns.length) {
+      return;
+    }
+
+    const columnAlignmentStr = await window.showQuickPick(
+      ["Left", "Center", "Right"],
+      {
+        title: "Column alignment",
+      }
+    );
+
+    let alignment = TableColumnAlignment.LEFT;
+    if (columnAlignmentStr === "Center") {
+      alignment = TableColumnAlignment.CENTER;
+    } else if (columnAlignmentStr === "Right") {
+      alignment = TableColumnAlignment.RIGHT;
+    }
+
+    this.columns[currCol].alignment = alignment;
+    this.format();
   }
 }

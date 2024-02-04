@@ -75,6 +75,10 @@
       {
         "command": "markdown-mate.table.row.delete",
         "title": "MM Table: Delete current row"
+      },
+      {
+        "command": "markdown-mate.table.column.align",
+        "title": "MM Table: Change column alignment"
       }
     ],
     "keybindings": [
@@ -143,6 +147,11 @@
         },
         {
           "command": "markdown-mate.table.row.delete",
+          "when": "editorLangId == markdown",
+          "group": "markdown-mate@table"
+        },
+        {
+          "command": "markdown-mate.table.column.align",
           "when": "editorLangId == markdown",
           "group": "markdown-mate@table"
         }

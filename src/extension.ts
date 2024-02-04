@@ -103,6 +103,13 @@ export function activate(context: ExtensionContext) {
     }
   );
 
+  const changeColumnAlignment = commands.registerCommand(
+    "markdown-mate.table.column.align",
+    () => {
+      markdownMate.changeColumnAlignment();
+    }
+  );
+
   context.subscriptions.push(insertToc);
   context.subscriptions.push(removeToc);
   context.subscriptions.push(toggleBold);
@@ -117,6 +124,7 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(insertColumnAfter);
   context.subscriptions.push(deleteCurrentColumn);
   context.subscriptions.push(deleteCurrentRow);
+  context.subscriptions.push(changeColumnAlignment);
 }
 
 // This method is called when your extension is deactivated

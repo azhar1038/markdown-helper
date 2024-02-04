@@ -77,4 +77,9 @@ export default class MarkdownMate {
     const table = new Table();
     table.deleteCurrentRow();
   }
+
+  public changeColumnAlignment() {
+    const table = new Table();
+    table.changeColumnAlignment();
+  }
 }

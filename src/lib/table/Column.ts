@@ -3,7 +3,7 @@ import { TableColumnAlignment } from "./enums";
 
 export default class Column {
   private _header: Cell = new Cell();
-  private _alignment: TableColumnAlignment = TableColumnAlignment.LEFT;
+  alignment: TableColumnAlignment = TableColumnAlignment.LEFT;
   width: number = 5; // Min width
   cells: Cell[] = [];
 
@@ -16,21 +16,17 @@ export default class Column {
     this.width = Math.max(this.width, this._header.width);
   }
 
-  get alignment(): TableColumnAlignment {
-    return this._alignment;
-  }
-
   setAlignment(separator: string) {
     separator = separator.trim();
     const start = separator.startsWith(":");
     const end = separator.endsWith(":");
 
     if (start && end) {
-      this._alignment = TableColumnAlignment.CENTER;
+      this.alignment = TableColumnAlignment.CENTER;
     } else if (end) {
-      this._alignment = TableColumnAlignment.RIGHT;
+      this.alignment = TableColumnAlignment.RIGHT;
     } else {
-      this._alignment = TableColumnAlignment.LEFT;
+      this.alignment = TableColumnAlignment.LEFT;
     }
   }
 
@@ -65,9 +61,9 @@ export default class Column {
 
   getHeaderSeparator(): string {
     const separator = "-".repeat(this.width - 4);
-    if (this._alignment === TableColumnAlignment.CENTER) {
+    if (this.alignment === TableColumnAlignment.CENTER) {
       return ` :${separator}: `;
-    } else if (this._alignment === TableColumnAlignment.RIGHT) {
+    } else if (this.alignment === TableColumnAlignment.RIGHT) {
       return ` -${separator}: `;
     } else {
       return ` -${separator}- `;
