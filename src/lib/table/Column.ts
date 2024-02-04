@@ -35,7 +35,7 @@ export default class Column {
   }
 
   insertCell(cell: Cell, index?: number) {
-    if (index === undefined) {
+    if (index === undefined || index === this.cells.length) {
       this.cells.push(cell);
     } else if (index >= 0 && index < this.cells.length) {
       this.cells.splice(index, 0, cell);
@@ -64,7 +64,6 @@ export default class Column {
   }
 
   getHeaderSeparator(): string {
-    console.log(this._alignment);
     const separator = "-".repeat(this.width - 4);
     if (this._alignment === TableColumnAlignment.CENTER) {
       return ` :${separator}: `;

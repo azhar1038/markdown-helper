@@ -166,7 +166,6 @@ export default class Table {
   }
 
   public async insert(): Promise<void> {
-    console.log(this.startLine, this.endLine);
     if (this.startLine !== this.endLine) {
       window.showInformationMessage("Cannot insert table inside another table");
       return;
@@ -206,27 +205,36 @@ export default class Table {
     this.format();
   }
 
-  private insertRow(lineNumber: number) {
-    if (lineNumber <= this.startLine + 1 || lineNumber > this.endLine) {
+  private getCurrentRow() {
+    const curPos = this.editor.selection.active;
+    const currLine = curPos.line;
+    return currLine - this.startLine - 2;
+  }
+
+  private insertRow(rowNumber: number) {
+    if (rowNumber < 0 || rowNumber > this.columns[0].cells.length + 1) {
       return;
     }
 
-    const rowNumber = lineNumber - this.startLine - 2;
     this.columns.forEach((column) => column.insertCell(new Cell(), rowNumber));
     this.format();
   }
 
   public insertRowBeforeCurrentRow() {
-    const curPos = this.editor.selection.active;
-    this.insertRow(curPos.line);
+    const currRow = this.getCurrentRow();
+    this.insertRow(currRow);
   }
 
   public insertRowAfterCurrentRow() {
-    const curPos = this.editor.selection.active;
-    this.insertRow(curPos.line + 1);
+    const curRow = this.getCurrentRow();
+    this.insertRow(curRow + 1);
   }
 
   private insertCol(columnNumber: number) {
+    if (columnNumber < 0 || columnNumber > this.columns.length) {
+      return;
+    }
+
     const rowCount = this.columns[0].cells.length;
     const column = new Column();
     column.setHeader("Header");
@@ -238,21 +246,49 @@ export default class Table {
     this.format();
   }
 
-  public insertColumnBeforeCurrentColumn() {
+  private getCurrentColumn() {
     const curPos = this.editor.selection.active;
-    const text = this.editor.document.getText(
-      new Range(new Position(curPos.line, 0), curPos)
+    const line = this.editor.document.lineAt(curPos.line).text;
+    let start = 0;
+    let end = line.length;
+    if (line.startsWith("|")) {
+      start++;
+    }
+    if (line.endsWith("|")) {
+      end--;
+    }
+
+    const sepIdxGen = line.matchAll(
+      new RegExp(Constants.REG_TABLE_COLUMN_SEPARATOR, "g")
     );
-    const contents = this.splitLineToColumns(text);
-    this.insertCol(contents.length - 1);
+
+    let column = 0;
+    let idx = start;
+    while (idx < end) {
+      const match: RegExpMatchArray | undefined = sepIdxGen.next().value;
+      if (!match) {
+        break;
+      }
+
+      const nextIdx = match.index;
+      if (nextIdx === undefined || nextIdx >= curPos.character) {
+        break;
+      }
+
+      column++;
+      idx = nextIdx;
+    }
+
+    return column;
+  }
+
+  public insertColumnBeforeCurrentColumn() {
+    const column = this.getCurrentColumn();
+    this.insertCol(column - 1);
   }
 
   public insertColumnAfterCurrentColumn() {
-    const curPos = this.editor.selection.active;
-    const text = this.editor.document.getText(
-      new Range(new Position(curPos.line, 0), curPos)
-    );
-    const contents = this.splitLineToColumns(text);
-    this.insertCol(contents.length);
+    const column = this.getCurrentColumn();
+    this.insertCol(column);
   }
 }

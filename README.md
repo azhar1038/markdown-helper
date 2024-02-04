@@ -20,8 +20,8 @@ With Markdown Mate, you can:
 
 Open VS Code command palette using `Ctrl + Shift + P`, then search for the following commands:
 
-- Markdown Mate: Insert/Update Table of Contents
-- Markdown Mate: Remove Table of Contents
+- MM TOC: Insert/Update Table of Contents
+- MM TOC: Remove Table of Contents
 
 ## Shortcuts
 
