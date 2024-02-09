@@ -69,4 +69,17 @@ export default class Column {
       return ` -${separator}- `;
     }
   }
+
+  formatCellContent(cell: Cell): string {
+    const text = ` ${cell.content} `;
+    if (this.alignment === TableColumnAlignment.LEFT) {
+      return text.padEnd(this.width);
+    } else if (this.alignment === TableColumnAlignment.RIGHT) {
+      return text.padStart(this.width);
+    } else {
+      return text
+        .padStart(Math.floor((this.width - text.length) / 2) + text.length)
+        .padEnd(this.width);
+    }
+  }
 }

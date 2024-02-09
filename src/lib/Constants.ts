@@ -11,6 +11,7 @@ export default abstract class Constants {
 
   static readonly TOC_START = "<!-- TOC -->";
   static readonly TOC_END = "<!-- /TOC -->";
+  static readonly TOC_HEADER_IGNORE = "<!-- TOC ignore -->";
   static readonly EOL = "\n";
   static readonly LIST_SYMBOL = "-";
   static readonly TAB = "  ";

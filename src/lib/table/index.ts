@@ -129,10 +129,9 @@ export default class Table {
     const headerLine = [];
     const headerSeparatorLine = [];
     for (let col = 0; col < this.columns.length; col++) {
-      headerLine.push(
-        this.columns[col].header.formattedContent(this.columns[col].width)
-      );
-      headerSeparatorLine.push(this.columns[col].getHeaderSeparator());
+      const currCol = this.columns[col];
+      headerLine.push(currCol.formatCellContent(currCol.header));
+      headerSeparatorLine.push(currCol.getHeaderSeparator());
     }
 
     tableLines.push(headerLine.join("|"));
@@ -142,7 +141,7 @@ export default class Table {
       const currLine = [];
       for (let col = 0; col < this.columns.length; col++) {
         const currCol = this.columns[col];
-        currLine.push(currCol.cells[cellIdx].formattedContent(currCol.width));
+        currLine.push(currCol.formatCellContent(currCol.cells[cellIdx]));
       }
       tableLines.push(currLine.join("|"));
     }

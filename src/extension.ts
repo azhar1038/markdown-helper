@@ -12,6 +12,13 @@ export function activate(context: ExtensionContext) {
     markdownMate.removeToc();
   });
 
+  const toggleTocHeaderIgnore = commands.registerCommand(
+    "markdown-mate.toc.toggle.header-ignore",
+    () => {
+      markdownMate.toggleTocHeaderIgnore();
+    }
+  );
+
   const toggleBold = commands.registerCommand(
     "markdown-mate.format.toggle.bold",
     () => {

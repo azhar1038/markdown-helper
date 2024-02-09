@@ -13,6 +13,11 @@ export default class MarkdownMate {
     await toc.removeTocFromDoc();
   }
 
+  public async toggleTocHeaderIgnore() {
+    const markdownEditor = new MarkdownEditor();
+    markdownEditor.toggleTocHeaderIgnore();
+  }
+
   public toggleBold() {
     const markdownEditor = new MarkdownEditor();
     markdownEditor.toggleBold();

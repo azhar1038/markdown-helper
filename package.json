@@ -45,6 +45,10 @@
         "title": "Remove Table of Contents"
       },
       {
+        "command": "markdown-mate.toc.toggle.header-ignore",
+        "title": "Include/Exclude this header from TOC"
+      },
+      {
         "command": "markdown-mate.table.insert",
         "title": "Insert new Table"
       },
@@ -170,14 +174,17 @@
         {
           "command": "markdown-mate.toc.insert",
           "when": "editorLangId == markdown",
-          "title": "Something",
           "group": "1_mm_toc@1"
         },
         {
           "command": "markdown-mate.toc.remove",
           "when": "editorLangId == markdown",
-          "title": "MM TOC: Remove Table of Contents",
           "group": "1_mm_toc@2"
+        },
+        {
+          "command": "markdown-mate.toc.toggle.header-ignore",
+          "when": "editorLangId == markdown",
+          "group": "1_mm_toc@3"
         }
       ]
     },

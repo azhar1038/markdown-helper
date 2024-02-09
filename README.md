@@ -7,7 +7,7 @@ With Markdown Mate, you can:
 - Insert and modify tables
 - Format text
 
-## Table of Contents <!-- TOC ignore -->
+## Table of Contents<!-- TOC ignore -->
 
 <!-- TOC -->
 
@@ -54,6 +54,7 @@ This submenu contains commands for TOC related operations:
 
 - Insert/Update Table of Contents
 - Remove Table of Contents
+- Include/Exclude this header from TOC
 
 ![Context menu for Markdown Mate: TOC](./images/context_menu_toc.png)
 
@@ -71,6 +72,7 @@ You may use all the commands from Command Palette too. Open VS Code command pale
 
 - Insert/Update Table of Contents
 - Remove Table of Contents
+- Include/Exclude this header from TOC
 - Insert a Table
 - Format this Table
 - Insert new row before
@@ -83,8 +85,6 @@ You may use all the commands from Command Palette too. Open VS Code command pale
 
 ## Future plans
 
-- Add feature to change text to uppercase
-- Add feature to change text to lowercase
-- Format cell text based on alignment
 - Fix issues
+- Show warnings
 - Optimize

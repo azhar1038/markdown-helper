@@ -1,11 +1,14 @@
 import {
+  DocumentSymbol,
   Position,
   Range,
   Selection,
   TextEditor,
   TextEditorEdit,
+  commands,
   window,
 } from "vscode";
+import Constants from "./Constants";
 
 export default class MarkdownEditor {
   editor: TextEditor;
@@ -210,6 +213,26 @@ export default class MarkdownEditor {
       this.removeSymbol(symbol, positions);
     } else {
       this.addSymbol(symbol, positions);
+    }
+  }
+
+  async toggleTocHeaderIgnore() {
+    const range = this.getSelectedRange();
+    const line = range.start.line;
+    const text = this.editor.document.lineAt(line).text;
+
+    if (!Constants.REG_HEADER.test(text)) {
+      return;
+    }
+
+    if (text.endsWith(Constants.TOC_HEADER_IGNORE)) {
+      this.removeSymbol(Constants.TOC_HEADER_IGNORE, [
+        new Position(line, text.length - Constants.TOC_HEADER_IGNORE.length),
+      ]);
+    } else {
+      this.addSymbol(Constants.TOC_HEADER_IGNORE, [
+        new Position(line, text.length),
+      ]);
     }
   }
 }
