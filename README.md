@@ -4,34 +4,58 @@ Markdown Mate is a software that allows you to easily create and edit markdown f
 With Markdown Mate, you can:
 
 - Generate Table of Contents
+- Insert and modify tables
 - Format text
 
 ## Table of Contents <!-- TOC ignore -->
 
 <!-- TOC -->
 
-- [Commands](#commands)
-- [Shortcuts](#shortcuts)
 - [Context Menu](#context-menu)
+  - [Markdown Mate: Table](#markdown-mate-table)
+  - [Markdown Mate: TOC](#markdown-mate-toc)
+- [Shortcuts](#shortcuts)
+- [Commands](#commands)
 - [Future plans](#future-plans)
 
 <!-- /TOC -->
 
-## Commands
+## Context Menu
 
-Open VS Code command palette using `Ctrl + Shift + P`, then search for the following commands:
+Context menu is the preferred way to use this plugin for TOC and Tables.
+When a markdown file is opened in editor, right click on it to reveal the menu.
 
-- MM TOC: Insert/Update Table of Contents
-- MM TOC: Remove Table of Contents
-- MM Table: Insert a Table
-- MM Table: Format this Table
-- MM Table: Insert new row before
-- MM Table: Insert new row after
-- MM Table: Insert new column before
-- MM Table: Insert new column after
-- MM Table: Delete current column
-- MM Table: Delete current row
-- MM Table: Change column alignment
+Menu has been grouped in submenu:
+
+- Markdown Mate: Table
+- Markdown Mate: TOC
+
+![Context menu for Markdown mate](./images/context_menu.png)
+
+### Markdown Mate: Table
+
+This submenu contains commands for table related operations:
+
+- Insert new Table
+- Insert new column before
+- Insert new column after
+- Insert new row before
+- Insert new row after
+- Delete current column
+- Delete current row
+- Format this table
+- Change column Alignment
+
+![Context menu for Markdown Mate: Table](./images/context_menu_table.png)
+
+### Markdown Mate: TOC
+
+This submenu contains commands for TOC related operations:
+
+- Insert/Update Table of Contents
+- Remove Table of Contents
+
+![Context menu for Markdown Mate: TOC](./images/context_menu_toc.png)
 
 ## Shortcuts
 
@@ -41,26 +65,26 @@ Open VS Code command palette using `Ctrl + Shift + P`, then search for the follo
 - `` Ctrl + Shift + `  `` - Toggle code block
 - `Ctrl + Shift + Q` - Toggle blockquote
 
-## Context Menu
+## Commands
 
-Table related commands are also available through context menu. Just right click on a markdown file and following commands are available
+You may use all the commands from Command Palette too. Open VS Code command palette using `Ctrl + Shift + P`, then search for the following commands:
 
-- MM Table: Insert a Table
-- MM Table: Format this Table
-- MM Table: Insert new row before
-- MM Table: Insert new row after
-- MM Table: Insert new column before
-- MM Table: Insert new column after
-- MM Table: Delete current column
-- MM Table: Delete current row
-- MM Table: Change column alignment
+- Insert/Update Table of Contents
+- Remove Table of Contents
+- Insert a Table
+- Format this Table
+- Insert new row before
+- Insert new row after
+- Insert new column before
+- Insert new column after
+- Delete current column
+- Delete current row
+- Change column alignment
 
 ## Future plans
 
 - Add feature to change text to uppercase
 - Add feature to change text to lowercase
-- Add feature to add link template
-- Add feature to add image template
 - Format cell text based on alignment
 - Fix issues
 - Optimize

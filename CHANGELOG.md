@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Context menu has been updated to group commands into submenus
+
+### Added
+
+- TOC commands are now accessible through context menu
+
 ## [0.0.3] - 2024-02-04
 
 ### Added

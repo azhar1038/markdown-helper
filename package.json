@@ -38,47 +38,47 @@
     "commands": [
       {
         "command": "markdown-mate.toc.insert",
-        "title": "MM TOC: Insert/Update Table of Contents"
+        "title": "Insert/Update Table of Contents"
       },
       {
         "command": "markdown-mate.toc.remove",
-        "title": "MM TOC: Remove Table of Contents"
+        "title": "Remove Table of Contents"
       },
       {
         "command": "markdown-mate.table.insert",
-        "title": "MM Table: Insert a Table"
+        "title": "Insert new Table"
       },
       {
         "command": "markdown-mate.table.format",
-        "title": "MM Table: Format this Table"
+        "title": "Format this Table"
       },
       {
         "command": "markdown-mate.table.row.before",
-        "title": "MM Table: Insert new row before"
+        "title": "Insert new row before"
       },
       {
         "command": "markdown-mate.table.row.after",
-        "title": "MM Table: Insert new row after"
+        "title": "Insert new row after"
       },
       {
         "command": "markdown-mate.table.column.before",
-        "title": "MM Table: Insert new column before"
+        "title": "Insert new column before"
       },
       {
         "command": "markdown-mate.table.column.after",
-        "title": "MM Table: Insert new column after"
+        "title": "Insert new column after"
       },
       {
         "command": "markdown-mate.table.column.delete",
-        "title": "MM Table: Delete current column"
+        "title": "Delete current column"
       },
       {
         "command": "markdown-mate.table.row.delete",
-        "title": "MM Table: Delete current row"
+        "title": "Delete current row"
       },
       {
         "command": "markdown-mate.table.column.align",
-        "title": "MM Table: Change column alignment"
+        "title": "Change column alignment"
       }
     ],
     "keybindings": [
@@ -111,52 +111,86 @@
     "menus": {
       "editor/context": [
         {
-          "command": "markdown-mate.table.insert",
-          "when": "editorLangId == markdown",
-          "group": "markdown-mate@table"
+          "submenu": "mm.table",
+          "group": "markdown-mate"
         },
         {
-          "command": "markdown-mate.table.format",
+          "submenu": "mm.toc",
+          "group": "markdown-mate"
+        }
+      ],
+      "mm.table": [
+        {
+          "command": "markdown-mate.table.insert",
           "when": "editorLangId == markdown",
-          "group": "markdown-mate@table"
+          "group": "1_mm_table_insert@1"
         },
         {
           "command": "markdown-mate.table.column.before",
           "when": "editorLangId == markdown",
-          "group": "markdown-mate@table"
+          "group": "1_mm_table_insert@2"
         },
         {
           "command": "markdown-mate.table.column.after",
           "when": "editorLangId == markdown",
-          "group": "markdown-mate@table"
+          "group": "1_mm_table_insert@3"
         },
         {
           "command": "markdown-mate.table.row.before",
           "when": "editorLangId == markdown",
-          "group": "markdown-mate@table"
+          "group": "1_mm_table_insert@4"
         },
         {
           "command": "markdown-mate.table.row.after",
           "when": "editorLangId == markdown",
-          "group": "markdown-mate@table"
+          "group": "1_mm_table_insert@5"
         },
         {
           "command": "markdown-mate.table.column.delete",
           "when": "editorLangId == markdown",
-          "group": "markdown-mate@table"
+          "group": "2_mm_table_delete@1"
         },
         {
           "command": "markdown-mate.table.row.delete",
           "when": "editorLangId == markdown",
-          "group": "markdown-mate@table"
+          "group": "2_mm_table_delete@2"
+        },
+        {
+          "command": "markdown-mate.table.format",
+          "when": "editorLangId == markdown",
+          "group": "3_mm_table_format@1"
         },
         {
           "command": "markdown-mate.table.column.align",
           "when": "editorLangId == markdown",
-          "group": "markdown-mate@table"
+          "group": "3_mm_table_format@2"
+        }
+      ],
+      "mm.toc": [
+        {
+          "command": "markdown-mate.toc.insert",
+          "when": "editorLangId == markdown",
+          "title": "Something",
+          "group": "1_mm_toc@1"
+        },
+        {
+          "command": "markdown-mate.toc.remove",
+          "when": "editorLangId == markdown",
+          "title": "MM TOC: Remove Table of Contents",
+          "group": "1_mm_toc@2"
         }
       ]
-    }
+    },
+    "submenus": [
+      {
+        "id": "mm.table",
+        "label": "Markdown Mate: Table"
+      },
+      {
+        "id": "mm.toc",
+        "label": "Markdown Mate: TOC"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
