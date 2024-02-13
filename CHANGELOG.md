@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Command and Context menu to include/exclude an header from TOC
 - TOC commands are now accessible through context menu
 
+### Fixes
+
+- Fix formatting of table if cell added/removed from table manually
+
 ## [0.0.3] - 2024-02-04
 
 ### Added

@@ -99,8 +99,13 @@ export default class Table {
       const line = document.lineAt(idx).text;
       const contents = this.splitLineToColumns(line);
       if (contents.length > this.columns.length) {
-        const mergedCell = contents.splice(contents.length - 1).join("\\|");
+        const mergedCell = contents.splice(this.columns.length - 1).join("\\|");
         contents.push(mergedCell);
+      } else if (contents.length < this.columns.length) {
+        const extra = this.columns.length - contents.length;
+        for (let i = 0; i < extra; i++) {
+          contents.push("");
+        }
       }
 
       for (let col = 0; col < contents.length; col++) {
@@ -112,7 +117,7 @@ export default class Table {
   }
 
   private splitLineToColumns(line: string) {
-    const contents = line.split(Constants.REG_TABLE_COLUMN_SEPARATOR);
+    const contents = line.trim().split(Constants.REG_TABLE_COLUMN_SEPARATOR);
     if (line.endsWith("|")) {
       contents.pop();
     }
@@ -137,11 +142,11 @@ export default class Table {
     tableLines.push(headerLine.join("|"));
     tableLines.push(headerSeparatorLine.join("|"));
 
-    for (let cellIdx = 0; cellIdx < this.columns[0].cells.length; cellIdx++) {
+    for (let row = 0; row < this.columns[0].cells.length; row++) {
       const currLine = [];
       for (let col = 0; col < this.columns.length; col++) {
         const currCol = this.columns[col];
-        currLine.push(currCol.formatCellContent(currCol.cells[cellIdx]));
+        currLine.push(currCol.formatCellContent(currCol.cells[row]));
       }
       tableLines.push(currLine.join("|"));
     }
