@@ -2,9 +2,8 @@
   "name": "markdown-mate",
   "displayName": "Markdown Mate",
   "description": "Some commands to help with Markdown files",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "icon": "images/logo.png",
-  "preview": true,
   "author": {
     "name": "Md Azharuddin",
     "email": "mdazhar.1038@gmail.com",

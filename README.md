@@ -1,6 +1,6 @@
-# Markdown Mate (WIP: Work in Progress)
+# Markdown Mate
 
-Markdown Mate is a software that allows you to easily create and edit markdown files using command palette and shortcuts.
+Markdown Mate is a VS Code pluin that allows you to easily create and edit markdown files using context menu, command palette and shortcuts.
 With Markdown Mate, you can:
 
 - Generate Table of Contents
@@ -85,6 +85,5 @@ You may use all the commands from Command Palette too. Open VS Code command pale
 
 ## Future plans
 
-- Fix issues
-- Show warnings
-- Optimize
+- Show better warnings
+- Add test cases
